@@ -40,8 +40,9 @@ root.innerHTML = `
     </main>
   </div>`;
 
+const appRoot: HTMLDivElement = root;
 const $ = <T extends HTMLElement>(selector: string) => {
-  const element = root.querySelector<T>(selector);
+  const element = appRoot.querySelector<T>(selector);
   if (!element) throw new Error(`Required UI element missing: ${selector}`);
   return element;
 };
@@ -102,7 +103,7 @@ function setEngineState(running: boolean): void {
   $("#run-button").textContent = running ? "■ Stop engine" : "▶ Start engine";
   $("#run-button").classList.toggle("danger", running);
   $("#run-button").classList.toggle("primary", !running);
-  root.querySelector(".topbar .status-dot")?.classList.toggle("live", running);
+  appRoot.querySelector(".topbar .status-dot")?.classList.toggle("live", running);
 }
 
 engine.events.on("started", () => { setEngineState(true); log("Engine lifecycle started.", "success"); });
@@ -133,7 +134,7 @@ $("#add-entity").addEventListener("click", () => {
 $("#clear-console").addEventListener("click", () => $("#console").replaceChildren());
 
 function runCommand(): void {
-  const input = $("#console-input");
+  const input = $("#console-input") as HTMLInputElement;
   const command = input.value.trim();
   if (!command) return;
   log(`> ${command}`);
@@ -171,9 +172,9 @@ $("#console-input").addEventListener("keydown", (event: KeyboardEvent) => {
   if (event.key === "Enter") runCommand();
 });
 
-for (const button of root.querySelectorAll<HTMLButtonElement>(".nav-item")) {
+for (const button of appRoot.querySelectorAll<HTMLButtonElement>(".nav-item")) {
   button.addEventListener("click", () => {
-    root.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
+    appRoot.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active"));
     button.classList.add("active");
     const title = button.querySelector("span")?.textContent ?? "Overview";
     $("#page-title").textContent = title;
