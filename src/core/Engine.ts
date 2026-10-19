@@ -1,7 +1,7 @@
 import { EventBus } from "./EventBus";
 import { Scene } from "./Scene";
 
-export interface EngineEvents extends Record<string, unknown> {
+export interface EngineEvents {
   started: { at: number };
   stopped: { at: number };
   frame: { deltaMs: number; elapsedMs: number };
