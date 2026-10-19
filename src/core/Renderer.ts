@@ -39,8 +39,10 @@ export class Canvas2DRenderer implements Renderer {
   }
 
   resize(width?: number, height?: number): void {
-    const nextWidth = Math.max(1, Math.floor(width ?? this.canvas.clientWidth || 800));
-    const nextHeight = Math.max(1, Math.floor(height ?? this.canvas.clientHeight || 460));
+    const requestedWidth = width ?? this.canvas.clientWidth;
+    const requestedHeight = height ?? this.canvas.clientHeight;
+    const nextWidth = Math.max(1, Math.floor(requestedWidth || 800));
+    const nextHeight = Math.max(1, Math.floor(requestedHeight || 460));
     const dpr = Math.max(1, window.devicePixelRatio || 1);
     this.canvas.width = Math.floor(nextWidth * dpr);
     this.canvas.height = Math.floor(nextHeight * dpr);
@@ -55,7 +57,6 @@ export class Canvas2DRenderer implements Renderer {
     this.context.clearRect(0, 0, width, height);
     this.drawGrid(width, height);
     this.drawCalls = 1;
-
     for (const entity of entities) {
       if (!entity.active) continue;
       const x = width / 2 + entity.x;
